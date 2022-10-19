@@ -1,0 +1,25 @@
+CREATE DATABASE Timeseries;
+
+CREATE TABLE meta_data(id_unit INT AUTO_INCREMENT UNIQUE, ean varchar(255) PRIMARY KEY, name varchar(255));
+
+
+CREATE TABLE timeseries(
+    timestamp Timestamp NOT NULL,
+    ean varchar(255) NOT NULL,
+    direction INT NOT NULL,
+    updated Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (timestamp, ean, direction, updated),
+    FOREIGN KEY (ean) references meta_data(ean) on DELETE CASCADE on UPDATE CASCADE
+); 
+
+INSERT into meta_data values (id_unit, '001', 'CI Rocket Wide');
+INSERT into timeseries  values (CURRENT_TIMESTAMP, '001', 1, updated);
+
+SELECT * FROM meta_data;
+SELECT * FROM timeseries;
+
+DELETE FROM meta_data WHERE name='CI Rocket Wide';
+UPDATE meta_data SET ean='002' WHERE ean='001';
+
+drop TABLE timeseries;
+drop TABLE meta_data;
